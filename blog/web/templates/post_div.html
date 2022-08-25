@@ -1,0 +1,109 @@
+{% extends 'base.html'%}
+
+{% block title%}
+home
+{% endblock%}]
+{% block content%}
+
+{% if rule == '/' %}
+     <form method="get" class="d-flex" action="/search">
+        <input class="form-controlme-2" type="search" placeholder="Search.." name="srch">
+        <button class="btn" type="submit"><i class="fa fa-search"></i></button>
+      </form>
+{% endif %}
+
+{% if not("search" in rule) and "post" in rule %}
+     <form method="get" class="d-flex" action="/post/{{username}}/search">
+        <input class="form-controlme-2" type="search" placeholder="Search.." name="srch">
+        <button class="btn" type="submit"><i class="fa fa-search"></i></button>
+      </form>
+{% endif %}
+
+
+<h1 align="center">{%block header%}{{username}}'s Posts{%endblock%}</h1>
+<div id="posts">
+{% for post in posts%}
+<div class="border border-top-0 border-primary rounded">
+<div class="alert alert-primary" role="alert">
+    <a href="/post/{{post.user.username}}">{{post.user.username}}</a> {{post.post_text}}
+    {% if user.id==post.author %}
+    <div class="btn-group">
+    <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown"></button>
+    <ul class="dropdown-menu">
+        <li>
+            <a href="/delete_post/{{post.id}}" class="dropdown-item">Delete</a>
+        </li>
+    </ul>
+    </div>
+    {% endif %}
+</div>
+<div>
+    <div class="collapse"id="comments-expanded-{{post.id}}">
+    {% for comment in post.comments %}
+    <div class="d-flex justify-content-between align-items-center">
+    <p class="text-dark">&emsp;&emsp;{{comment.cm_text}}</p>
+    <small class="text-muted">{{comment.date_created}}</small>
+    {% if user.id==comment.author or user.id== post.author %}
+    <div class="btn-group">
+        <i class="material-icons btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown">&#xe872;</i>
+        <ul class="dropdown-menu">
+            <li>
+                <a href="/delete_comment/{{comment.id}}" class="dropdown-item">Delete</a>
+            </li>
+        </ul>
+        </div>
+    {% endif %}
+    </div>
+    {% endfor %}
+    </div>
+    {% if post.comments|length >0 %}
+    <a data-bs-toggle="collapse" href="#comments-expanded-{{post.id}}" role="button">
+        <small class="m-3">View {{post.comments|length}} Comments</small>
+    </a>
+    {% else %}
+    <small class="text-muted m-3">No comments</small>
+    {% endif%}
+
+<div class="makecomment">
+    <form class="input-group mb-3" method="POST" action="/create_comment/{{post.id}}">
+        <input type="text" id="text" name="commnet_text" class="form-control" placeholder="comment here....!" style="border-bottom:1px solid blue;border-color:transparent;overflow:auto;"/>
+        <button type="submit" class="btn btn-primary">Comment</button>
+    </form>
+    
+</div>
+</div>
+<!-- {%set liked=false %}
+{%for Like in post.likes %}
+    {% if Like.author==current_user.id %}
+        {% set liked=true %}
+    {% endif %}
+{% endfor %}
+heart comments
+{% if liked%}
+    {%  set icon_name="fas fa-heart" %}
+{% else %}
+{%  set icon_name="far fa-heart" %}
+{% endif %} -->
+<div class="d-flex m-3 justify-content-between bg-light rounded">
+   <!--{{post.likes|length}}-->
+     {% if user.id in post.likes|map(attribute="author")|list %}
+     <a href="/like_post/{{post.id}}"><i class="fas fa-heart"> {{post.likes|length}}</i></a>
+    <!--- <i class="fas fa-heart" id="like-button-{{post.id}}" onclick="like({{post.id}})"></i>-->
+     {% else %} 
+     <a href="/like_post/{{post.id}}"><i class="far fa-heart"> {{post.likes|length}}</i></a>
+     <!--- <i class="far fa-heart" id="like-button-{{post.id}}" onclick="like({{post.id}})"></i>-->
+     {% endif %}
+    <!-- <a href="/like_post/{{post.id}}">
+        <i class="{{icon_name}}"> {{post.likes|length}}</i>
+    </a>-->
+    {{post.date_created}}</div> 
+</div>
+<br>
+{% endfor %}
+</div>
+{%block footer%}
+    <div align="center">
+        <a href="{{url_for('views.create_post')}}"><button type="button" class="btn btn-lg btn-primary">Create Post</button></a>
+    </div>
+    {% endblock %}
+{% endblock %}

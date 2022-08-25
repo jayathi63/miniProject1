@@ -1,0 +1,24 @@
+{% extends 'base.html'%}
+
+{% block title%}
+login
+{% endblock%}
+{% block content%}
+    <h2>login form</h2>
+    <form method="POST">
+        <div class="form-outline mb-4">
+          <input type="email" name="email" id="form2Example1" class="form-control" />
+          <label class="form-label" for="form2Example1">Email address</label>
+        </div>
+        <div class="form-outline mb-4">
+          <input type="password" name="pswd" id="form2Example2" class="form-control" />
+          <label class="form-label" for="form2Example2">Password</label>
+        </div>
+        <div class="row mb-4">      
+          <div class="col">
+            <a href="#!">Forgot password?</a>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+      </form>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html'%}
+
+{% block title%}
+sign_up
+{% endblock%}
+{% block content%}
+<h1>
+REGISTER HERE
+</h1>
+<form method="POST">
+    <div class="form-outline mb-4">
+        <label class="form-label" for="em1">Email address</label>
+      <input type="email"  name ="email"id="em1" class="form-control" />
+      
+    </div>
+    <div class="form-outline mb-4">
+        <label class="form-label" for="u1">Username</label>
+        <input type="text" name="username" id="u1" class="form-control" />
+        
+      </div>
+    <div class="form-outline mb-4">
+      <label class="form-label" for="p1">Password</label>
+      <input type="password" name="password1" id="p1" class="form-control" />
+      
+    </div>
+    <div class="form-outline mb-4">
+        <label class="form-label" for="pa1">Confirm Password</label>
+        <input type="password" name="password2" id="pa1" class="form-control" />
+       
+      </div>
+    <div class="row mb-4">      
+      <div class="col">
+      If you already registered  <a href="{{url_for('auth.login')}}">login here</a>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block mb-4">Sign-Up</button>
+  </form>
+{% endblock %}
